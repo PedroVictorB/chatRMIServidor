@@ -14,5 +14,6 @@ import java.rmi.RemoteException;
  * @author Pedro
  */
 public interface Comandos extends Remote{
-    public Boolean Login(String nome, String senha) throws RemoteException;
+    public Boolean Login(String login, String senha) throws RemoteException;
+    public Boolean Cadastrar(String nome, String login, String senha) throws RemoteException;
 }

@@ -7,9 +7,11 @@
 package DAO;
 
 import Entidades.Usuario;
+import Entidades.UsuarioLogado;
 import bd.conexaoDB;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -25,7 +27,7 @@ public class usuarioDAO {
     
     
     public boolean cadastrar(Usuario c) {
-        String sql = "INSERT INTO clientes(nome, login, senha) VALUES(?,?,?)";
+        String sql = "INSERT INTO usuario(nome, login, senha) VALUES(?,?,?)";
 
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
@@ -39,5 +41,46 @@ public class usuarioDAO {
             return false;
         }
 
+    }
+    
+    public UsuarioLogado buscarUsuario(UsuarioLogado u) {
+        String sql = "SELECT * FROM usuario WHERE login = ?";
+
+        ResultSet rs;
+        
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, u.getLogin());
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                u.setId((int)rs.getInt("id"));
+                u.setNome((String)rs.getString("nome"));
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            return null;
+        }
+        return u;
+    }
+    
+    public Boolean login(String login, String senha){
+        String sql = "SELECT * FROM usuario WHERE login = ?";
+
+        ResultSet rs;
+        
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, login);
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                if(!senha.equals((String)rs.getString("senha"))){
+                    return false;
+                }
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            return null;
+        }
+        return true;
     }
 }

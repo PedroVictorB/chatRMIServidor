@@ -6,6 +6,8 @@
 
 package Conn;
 
+import DAO.usuarioDAO;
+import Entidades.Usuario;
 import java.rmi.Naming;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -42,15 +44,24 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
     }
 
     @Override
-    public Boolean Login(String nome, String senha) throws RemoteException {
+    public Boolean Login(String login, String senha) throws RemoteException {
         try {
-            System.out.println("Nome: "+nome);
+            System.out.println("Nome: "+login);
             System.out.println("Senha: "+senha);
             System.out.println(UnicastRemoteObject.getClientHost());
         } catch (ServerNotActiveException ex) {
             Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
         return true;
+    }
+
+    @Override
+    public Boolean Cadastrar(String nome, String login, String senha) throws RemoteException {
+        Usuario u = new Usuario();
+        u.setNome(nome);
+        u.setLogin(login);
+        u.setSenha(senha);
+        return new usuarioDAO().cadastrar(u);
     }
     
 }
