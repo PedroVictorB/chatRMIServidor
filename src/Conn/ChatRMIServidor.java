@@ -49,10 +49,13 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
             System.out.println("Nome: "+login);
             System.out.println("Senha: "+senha);
             System.out.println(UnicastRemoteObject.getClientHost());
+            if(new usuarioDAO().login(login, senha)){
+                return true;
+            }
         } catch (ServerNotActiveException ex) {
             Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return true;
+        return false;
     }
 
     @Override
