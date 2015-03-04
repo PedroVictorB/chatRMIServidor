@@ -6,8 +6,11 @@
 
 package Conn;
 
+import Entidades.UsuarioLogado;
+import Entidades.teste;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  *
@@ -16,4 +19,5 @@ import java.rmi.RemoteException;
 public interface Comandos extends Remote{
     public Boolean Login(String login, String senha) throws RemoteException;
     public Boolean Cadastrar(String nome, String login, String senha) throws RemoteException;
+    public teste ListaDeClientesConectados() throws RemoteException;
 }

@@ -6,11 +6,13 @@
 
 package Entidades;
 
+import java.io.Serializable;
+
 /**
  *
  * @author Pedro
  */
-public class UsuarioLogado {
+public class UsuarioLogado implements Serializable{
     private String login;
     private String nome;
     private int id;

@@ -13,6 +13,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 /**
  *
@@ -82,5 +83,23 @@ public class usuarioDAO {
             return null;
         }
         return true;
+    }
+    
+    public ArrayList ListaDeClientes() {
+        String sql = "SELECT * FROM usuario";
+        ResultSet rs;
+        ArrayList array = new ArrayList();
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            rs = stmt.executeQuery();
+            while (rs.next()) {
+                array.add(new Object[]{Integer.parseInt(rs.getObject("id").toString()), rs.getObject("nome").toString()});
+            }
+            stmt.close();
+        } catch (SQLException u) {
+            return null;
+        }
+
+        return array;
     }
 }
