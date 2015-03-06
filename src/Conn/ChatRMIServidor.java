@@ -10,7 +10,9 @@ import DAO.usuarioDAO;
 import Entidades.Usuario;
 import Entidades.UsuarioLogado;
 import Entidades.teste;
+import java.net.MalformedURLException;
 import java.rmi.Naming;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -80,6 +82,21 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
         teste t = new teste();//array list colocada em uma classe para permitir transporte rmi
         t.lista = this.lista;
         return t;
+    }
+
+    @Override
+    public void SendMessage(String msg) throws RemoteException {
+        
+        for(UsuarioLogado u : lista){
+            try {
+                ReceiveMessage m = (ReceiveMessage) Naming.lookup("//" + u.getIp() + "/"+u.getLogin());
+                m.mensagem(msg);
+            } catch (NotBoundException ex) {
+                Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (MalformedURLException ex) {
+                Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     
