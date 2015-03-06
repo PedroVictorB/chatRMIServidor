@@ -89,12 +89,23 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
         
         for(UsuarioLogado u : lista){
             try {
-                ReceiveMessage m = (ReceiveMessage) Naming.lookup("//" + u.getIp() + "/"+u.getLogin());
+                System.out.println(""+u.getLogin());
+                ReceiveMessage m = (ReceiveMessage) Naming.lookup("//" + "192.168.0.14" + "/"+u.getLogin());
+                System.out.println("Mensagem: "+msg);
                 m.mensagem(msg);
             } catch (NotBoundException ex) {
                 Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
             } catch (MalformedURLException ex) {
                 Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public void Deslogar(String login) throws RemoteException {
+        for(UsuarioLogado u : lista){
+            if(u.getLogin().equals(login)){
+                lista.remove(u);
             }
         }
     }

@@ -21,4 +21,5 @@ public interface Comandos extends Remote{
     public Boolean Cadastrar(String nome, String login, String senha) throws RemoteException;
     public teste ListaDeClientesConectados() throws RemoteException;
     public void SendMessage(String msg) throws RemoteException;
+    public void Deslogar(String login) throws RemoteException;
 }
