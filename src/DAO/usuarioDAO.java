@@ -54,6 +54,7 @@ public class usuarioDAO {
             stmt.setString(1, u.getLogin());
             rs = stmt.executeQuery();
             while(rs.next()){
+                u.setLogin((String)rs.getString("login"));
                 u.setId((int)rs.getInt("id"));
                 u.setNome((String)rs.getString("nome"));
             }

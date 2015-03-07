@@ -13,6 +13,6 @@ import java.util.ArrayList;
  *
  * @author Pedro
  */
-public class teste implements Serializable{
+public class ListaUsuariosLogados implements Serializable{
     public ArrayList<UsuarioLogado> lista;
 }

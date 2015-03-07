@@ -9,7 +9,7 @@ package Conn;
 import DAO.usuarioDAO;
 import Entidades.Usuario;
 import Entidades.UsuarioLogado;
-import Entidades.teste;
+import Entidades.ListaUsuariosLogados;
 import java.net.MalformedURLException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
@@ -36,12 +36,22 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
         super();
     }
     
+    public static void main(String[] args) {
+        ChatRMIServidor chat;
+        
+        try {
+            chat = new ChatRMIServidor();
+            chat.startServer();
+        } catch (RemoteException ex) {
+            Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
     public void startServer(){
-        try { // Creates an object of the HelloServer class. 
-            obj = new ChatRMIServidor(); // Bind this object instance to the name "HelloServer". 
+        try {
+            obj = new ChatRMIServidor();
             r = LocateRegistry.createRegistry(1099);
             r.bind("host", obj);
-            //Naming.rebind("sendMessage", obj);
             System.out.println("Ligado no registro");
         } catch (Exception ex) {
             System.out.println("error: " + ex.getMessage());
@@ -55,12 +65,13 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
             if(new usuarioDAO().login(login, senha)){
                 UsuarioLogado l = new usuarioDAO().buscarUsuario(new UsuarioLogado(login));
                 l.setIp(UnicastRemoteObject.getClientHost());
-                System.out.println("Login:"+l.getLogin()+" Nome:"+l.getNome()+" ID:"+l.getId()+" IP:"+l.getIp());
+                System.out.println("Usuário Logado --> Login:"+l.getLogin()+" Nome:"+l.getNome()+" ID:"+l.getId()+" IP:"+l.getIp());
                 lista.add(l);//coloca o usuario em uma lista de usuarios logados
                 return true;
             }
         } catch (ServerNotActiveException ex) {
             Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         }
         return false;
     }
@@ -75,11 +86,8 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
     }
 
     @Override
-    public teste ListaDeClientesConectados() throws RemoteException {
-        for(UsuarioLogado u : this.lista){
-            System.out.println(""+u.getNome());
-        }
-        teste t = new teste();//array list colocada em uma classe para permitir transporte rmi
+    public ListaUsuariosLogados ListaDeClientesConectados() throws RemoteException {
+        ListaUsuariosLogados t = new ListaUsuariosLogados();//array list colocada em uma classe para permitir transporte rmi
         t.lista = this.lista;
         return t;
     }
@@ -89,8 +97,7 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
         
         for(UsuarioLogado u : lista){
             try {
-                System.out.println(""+u.getLogin());
-                ReceiveMessage m = (ReceiveMessage) Naming.lookup("//" + "192.168.0.14" + "/"+u.getLogin());
+                ReceiveMessage m = (ReceiveMessage) Naming.lookup("//" + u.getIp() + "/"+u.getLogin());
                 System.out.println("Mensagem: "+msg);
                 m.mensagem(msg);
             } catch (NotBoundException ex) {
@@ -108,6 +115,11 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
                 lista.remove(u);
             }
         }
+    }
+
+    @Override
+    public UsuarioLogado BuscarUsuario(String login) throws RemoteException {
+        return new usuarioDAO().buscarUsuario(new UsuarioLogado(login));
     }
     
     
