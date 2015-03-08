@@ -11,6 +11,7 @@ import Entidades.Usuario;
 import Entidades.UsuarioLogado;
 import Entidades.ListaUsuariosLogados;
 import java.net.MalformedURLException;
+import java.rmi.AccessException;
 import java.rmi.Naming;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -110,9 +111,18 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
 
     @Override
     public void Deslogar(String login) throws RemoteException {
-        for(UsuarioLogado u : lista){
-            if(u.getLogin().equals(login)){
-                lista.remove(u);
+        for(int i =0; i < lista.size();i++){
+            if(lista.get(i).getLogin().equals(login)){
+                System.out.println("Usuario "+lista.get(i).getLogin()+" deslogado.");
+                try {
+                    r = LocateRegistry.getRegistry();
+                    r.unbind(login);
+                } catch (NotBoundException ex) {
+                    Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
+                } catch (AccessException ex) {
+                    Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
+                }
+                lista.remove(i);
             }
         }
     }
