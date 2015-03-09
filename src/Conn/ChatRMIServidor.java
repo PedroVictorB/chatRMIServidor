@@ -128,7 +128,12 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos{
     }
 
     @Override
-    public UsuarioLogado BuscarUsuario(String login) throws RemoteException {
+    public UsuarioLogado buscarUsuarioById(int id) throws RemoteException {
+                return new usuarioDAO().buscarUsuarioID(new UsuarioLogado(id));
+    }
+
+    @Override
+    public UsuarioLogado buscarUsuarioByName(String login) throws RemoteException {
         return new usuarioDAO().buscarUsuario(new UsuarioLogado(login));
     }
     

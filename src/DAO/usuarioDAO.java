@@ -65,6 +65,27 @@ public class usuarioDAO {
         return u;
     }
     
+    public UsuarioLogado buscarUsuarioID(UsuarioLogado u) {
+        String sql = "SELECT * FROM usuario WHERE id = ?";
+
+        ResultSet rs;
+        
+        try {
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, u.getLogin());
+            rs = stmt.executeQuery();
+            while(rs.next()){
+                u.setLogin((String)rs.getString("login"));
+                u.setId((int)rs.getInt("id"));
+                u.setNome((String)rs.getString("nome"));
+            }
+            stmt.close();
+        } catch (SQLException ex) {
+            return null;
+        }
+        return u;
+    }
+    
     public Boolean login(String login, String senha){
         String sql = "SELECT * FROM usuario WHERE login = ?";
 

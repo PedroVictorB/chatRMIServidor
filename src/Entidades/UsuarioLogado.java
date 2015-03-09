@@ -21,6 +21,10 @@ public class UsuarioLogado implements Serializable{
     public UsuarioLogado(String login){
         this.login = login;
     }
+    
+    public UsuarioLogado(int id){
+        this.id = id;
+    }
 
     /**
      * @return the login

@@ -22,5 +22,6 @@ public interface Comandos extends Remote{
     public ListaUsuariosLogados ListaDeClientesConectados() throws RemoteException;
     public void SendMessage(String msg) throws RemoteException;
     public void Deslogar(String login) throws RemoteException;
-    public UsuarioLogado BuscarUsuario(String login) throws RemoteException;
+    public UsuarioLogado buscarUsuarioByName(String login) throws RemoteException;
+    public UsuarioLogado buscarUsuarioById(int id) throws RemoteException;
 }
