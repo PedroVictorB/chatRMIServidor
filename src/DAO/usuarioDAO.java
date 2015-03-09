@@ -72,7 +72,7 @@ public class usuarioDAO {
         
         try {
             PreparedStatement stmt = connection.prepareStatement(sql);
-            stmt.setString(1, u.getLogin());
+            stmt.setInt(1, u.getId());
             rs = stmt.executeQuery();
             while(rs.next()){
                 u.setLogin((String)rs.getString("login"));
@@ -83,6 +83,7 @@ public class usuarioDAO {
         } catch (SQLException ex) {
             return null;
         }
+        System.out.println("DAO: "+u.getLogin()+"  "+u.getNome());
         return u;
     }
     

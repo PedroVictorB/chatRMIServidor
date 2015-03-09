@@ -76,7 +76,7 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos {
                 return true;
             }
         } catch (ServerNotActiveException ex) {
-            Logger.getLogger(ChatRMIServidor.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("Servidor não está ativo.");
             return false;
         }
         return false;
@@ -146,7 +146,9 @@ public class ChatRMIServidor extends UnicastRemoteObject implements Comandos {
 
     @Override
     public void SendMessageIndividual(Mensagem m) throws RemoteException {
+        System.out.println("Mensagem: "+m.getTo()+" "+m.getFrom()+" "+m.getMensagem());
         for (UsuarioLogado u : lista) {
+            System.out.println(u.getLogin());
             if (m.getTo().equals(u.getLogin())) {
                 try {
                     ReceiveMessage rm = (ReceiveMessage) Naming.lookup("//" + u.getIp() + "/" + u.getLogin());
