@@ -6,6 +6,7 @@
 
 package Conn;
 
+import Entidades.Mensagem;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -14,5 +15,6 @@ import java.rmi.RemoteException;
  * @author Pedro
  */
 interface ReceiveMessage extends Remote{
-    public void mensagem(String msg) throws RemoteException;
+    public void mensagemGrupo(String msg) throws RemoteException;
+    public void mensagemIndividual(Mensagem m) throws RemoteException;
 }
